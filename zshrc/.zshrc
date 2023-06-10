@@ -152,6 +152,6 @@ export IP=$(ifconfig wlo1 | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | h
 alias ls="exa"
 export PATH=$PATH:/home/elliot/.local/share/gem/ruby/3.0.0/bin:$HOME/.emacs.d/bin
 alias ghidra="/opt/ghidra/ghidraRun"
-alias macos="$HOME/tools/macOS-Simple-KVM/start.sh"
+alias macos="$HOME/efs/tools/macOS-Simple-KVM/start.sh"
 export PATH=~/.npm-global/bin:$PATH
 source /usr/share/nvm/init-nvm.sh
