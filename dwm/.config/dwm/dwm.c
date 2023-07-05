@@ -333,6 +333,7 @@ static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
+static void togglefloatingall(const Arg *arg);
 static void togglefullscr(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -3141,16 +3142,104 @@ void togglebar(const Arg *arg) {
   arrange(selmon);
 }
 
+// void togglefloating(const Arg *arg) {
+//   if (!selmon->sel)
+//     return;
+//   if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
+//     return;
+//   selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
+//   if (selmon->sel->isfloating)
+//     resize(selmon->sel, selmon->sel->x, selmon->sel->y, selmon->sel->w,
+//            selmon->sel->h, 0);
+//   arrange(selmon);
+// }
+
+// void togglefloatingall(const Arg *arg) {
+//   static int floating_all = 0;
+//   Client *c;
+
+//   if (floating_all) {
+//     for (c = selmon->clients; c; c = c->next) {
+//       if (ISVISIBLE(c)) {
+//         c->isfloating = c->oldstate;
+//         if (c->isfloating) {
+//           XRaiseWindow(dpy, c->win);
+//         }
+//       }
+//     }
+//   } else {
+//     for (c = selmon->clients; c; c = c->next) {
+//       if (ISVISIBLE(c)) {
+//         c->oldstate = c->isfloating;
+//         c->isfloating = True;
+//         XRaiseWindow(dpy, c->win);
+//       }
+//     }
+//   }
+
+//   floating_all = !floating_all;
+// }
+
 void togglefloating(const Arg *arg) {
-  if (!selmon->sel)
-    return;
-  if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
-    return;
-  selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
-  if (selmon->sel->isfloating)
-    resize(selmon->sel, selmon->sel->x, selmon->sel->y, selmon->sel->w,
-           selmon->sel->h, 0);
-  arrange(selmon);
+    if (!selmon->sel)
+        return;
+
+    if (selmon->sel->isfullscreen)  // Check if the client is in fullscreen mode
+        setfullscreen(selmon->sel, False);
+
+    selmon->sel->isfloating = !selmon->sel->isfloating;
+
+    if (selmon->sel->isfloating) {
+        if (!selmon->sel->oldstate) {
+            // Restore the previous size and position of the floating client
+            selmon->sel->x = selmon->sel->oldx;
+            selmon->sel->y = selmon->sel->oldy;
+            selmon->sel->w = selmon->sel->oldw;
+            selmon->sel->h = selmon->sel->oldh;
+        }
+        resize(selmon->sel, selmon->sel->x, selmon->sel->y,
+               selmon->sel->w, selmon->sel->h, False);
+        XRaiseWindow(dpy, selmon->sel->win);
+    } else {
+        // Store the current size and position of the floating client
+        selmon->sel->oldx = selmon->sel->x;
+        selmon->sel->oldy = selmon->sel->y;
+        selmon->sel->oldw = selmon->sel->w;
+        selmon->sel->oldh = selmon->sel->h;
+
+        resize(selmon->sel, selmon->sel->x, selmon->sel->y,
+               selmon->sel->w, selmon->sel->h, True);
+        arrange(selmon);
+    }
+}
+
+void togglefloatingall(const Arg *arg) {
+    static int floating_all = 0;
+    Client *c;
+
+    if (floating_all) {
+        for (c = selmon->clients; c; c = c->next) {
+            if (ISVISIBLE(c)) {
+                if (c->isfloating) {
+                    c->isfloating = c->oldstate;
+                    if (c->isfloating)
+                        XRaiseWindow(dpy, c->win);
+                }
+            }
+        }
+    } else {
+        for (c = selmon->clients; c; c = c->next) {
+            if (ISVISIBLE(c)) {
+                if (!c->isfloating) {
+                    c->oldstate = c->isfloating;
+                    c->isfloating = True;
+                    XRaiseWindow(dpy, c->win);
+                }
+            }
+        }
+    }
+
+    floating_all = !floating_all;
 }
 
 void togglefullscr(const Arg *arg) {
