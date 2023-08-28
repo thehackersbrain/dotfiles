@@ -153,5 +153,5 @@ alias ls="exa"
 export PATH=$PATH:/home/elliot/.local/share/gem/ruby/3.0.0/bin:$HOME/.emacs.d/bin
 alias ghidra="/opt/ghidra/ghidraRun"
 alias macos="$HOME/efs/tools/macOS-Simple-KVM/start.sh"
-export PATH=~/.npm-global/bin:$PATH
+export PATH=~/.npm-global/bin:$HOME/tools/genymotion:$PATH
 source /usr/share/nvm/init-nvm.sh
