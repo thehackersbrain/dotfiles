@@ -2,13 +2,14 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/elliot/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="duellj"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -23,14 +24,13 @@ ZSH_THEME="robbyrussell"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -45,6 +45,9 @@ ZSH_THEME="robbyrussell"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -68,8 +71,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-z)
-# plugins=(zsh-autosuggestions)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -98,24 +100,14 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
 
-# Custom Environment
-# export 
-
-# ZSH Custom Configuration 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
-
-# ZSH Syntax Highlighting
-# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Exporting path for custom tools
-export PATH=$PATH:/opt/passgen/:/home/elliot/.local/bin/
-
-# Bash IP Aliases
-#getip(){ echo -e "IP: \e[1;32m$(ifconfig $1 | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1)" }
-# cpip(){ ifconfig $1 | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n' | xclip -selection clip }
+# custom paths
+export ANDROID_HOME=$HOME/android-sdk
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export PATH=$PATH:$HOME/.local/bin/:/home/elliot/.cargo/bin:$HOME/.npm-global/bin:/home/elliot/devs/flutter/bin:$ANDROID_HOME/platform-tools:$HOME/go/bin/
+export GEM_HOME="$(gem env user_gemhome)"
+export PATH="$HOME/.local/bin:$PATH:$GEM_HOME/bin:$HOME/.config/emacs/bin"
 
 #-----------------------------------------------------
 getip() {
@@ -138,20 +130,54 @@ cpip() {
 # Password copy in clipboard
 pscp() {
 	if [[ $# == 1 ]]; then
-		passcp -l $1 | cut -d " " -f2 | tr -d '\n' | xclip -selection clip
+		passgen -l $1 | cut -d " " -f2 | tr -d '\n' | xclip -selection clip
 	else
 		echo -e "Usage: \e[32m$0\e[0m <passwd-length>"
 	fi
 }
-#-------------------------------------------------------
-# Local IP Address of wlo1
-export IP=$(ifconfig wlo1 | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')
+
 #-------------------------------------------------------
 
-# Alias for exa
+# Connect to AWS EC2 Instance
+hrserver() {
+	if [[ $# == 1 ]]; then
+		ssh -i /home/elliot/.ssh/hackandrecon-server.pem ubuntu@$1
+	else
+		echo -e "Usage: \e[32m$0\e[0m <ip-addr>"
+	fi
+}
+
+#-------------------------------------------------------
+
+export IP=$(ifconfig wlo1 | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')
+
+#-------------------------------------------------------
+
 alias ls="exa"
-export PATH=$PATH:/home/elliot/.local/share/gem/ruby/3.0.0/bin:$HOME/.emacs.d/bin
-alias ghidra="/opt/ghidra/ghidraRun"
-alias macos="$HOME/efs/tools/macOS-Simple-KVM/start.sh"
-export PATH=~/.npm-global/bin:$HOME/tools/genymotion:$PATH
+alias ip="ip -c"
+alias gpdf="bash /home/elliot/scripts/gpdf"
+alias bbld="bash /home/elliot/efs/projects/books/intro-to-hacking/script/bbld"
+alias blackhole="/home/elliot/efs/projects/BlackHole/build/linux/x64/release/bundle/blackhole"
+alias clip='xclip -sel clip'
+alias cloudshell="gcloud cloud-shell ssh --authorize-session"
+alias toolsenv="source /home/elliot/tools/env/bin/activate"
+alias mserverb="mitmweb -p 8082 --mode upstream:127.0.0.1:8080 --ssl-insecure"
+alias mserverp="mitmweb -p 8082 --mode upstream:127.0.0.1:8085 --ssl-insecure"
+alias gmssh='eval "$(ssh-agent -s)" && ssh-add ~/.ssh/mrrobothacks-id_rsa'
+alias gw='graphw00f'
+alias npmpr='export npm_config_prefix="$HOME/.local"'
+alias mphone='aft-mtp-mount /home/elliot/phone'
+alias gcscp='gcloud cloud-shell scp'
+#alias caido="/home/elliot/tools/caido/caido-desktop-v0.37.0-linux-x86_64.AppImage"
+alias punisher='cd /home/elliot/efs/vagrant-machines/punisher && vagrant up && vagrant ssh'
+alias punisherd='cd /home/elliot/efs/vagrant-machines/punisher && vagrant halt'
+alias llvim='function _lvim() { terminator -e "lvim $@"; }; _lvim'
+alias dtmux="tmux new-session -s LOCAL -n SHELL"
+alias list='for i in `find -type f 2>/dev/null`; do echo -e "$i: \e[1;32m`cat $i | wc -l`\e[0m"; done'
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/elliot/tools/google-cloud-sdk/path.zsh.inc' ]; then . '/home/elliot/tools/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/elliot/tools/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/elliot/tools/google-cloud-sdk/completion.zsh.inc'; fi
 source /usr/share/nvm/init-nvm.sh
