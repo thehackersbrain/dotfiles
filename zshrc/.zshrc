@@ -9,7 +9,8 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
-ZSH_THEME="duellj"
+# ZSH_THEME="duellj"
+ZSH_THEME="thb-gkali"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -26,7 +27,7 @@ ZSH_THEME="duellj"
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
@@ -71,7 +72,7 @@ ZSH_THEME="duellj"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting z)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting z aliases)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -149,7 +150,13 @@ hrserver() {
 
 #-------------------------------------------------------
 
-export IP=$(ifconfig wlo1 | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')
+L_IP_ADDR="$(ifconfig tun0 2>/dev/null | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')"
+if [[ $L_IP_ADDR = "" ]]; then
+	export IP="M $(ifconfig eno1 2>/dev/null | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')"
+else
+	export IP="T $L_IP_ADDR"
+fi
+# export IP="M $(ifconfig wlo1 | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')"
 
 #-------------------------------------------------------
 
@@ -174,6 +181,9 @@ alias punisherd='cd /home/elliot/efs/vagrant-machines/punisher && vagrant halt'
 alias llvim='function _lvim() { terminator -e "lvim $@"; }; _lvim'
 alias dtmux="tmux new-session -s LOCAL -n SHELL"
 alias list='for i in `find -type f 2>/dev/null`; do echo -e "$i: \e[1;32m`cat $i | wc -l`\e[0m"; done'
+alias rr='reconranger'
+alias mehd="sudo mount -o uid=elliot,gid=elliot /dev/sdb1 /home/elliot/mnt"
+alias cwee="cd /home/elliot/ehd/courses/HTB_CWEE && python -m http.server 55555"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/elliot/tools/google-cloud-sdk/path.zsh.inc' ]; then . '/home/elliot/tools/google-cloud-sdk/path.zsh.inc'; fi
@@ -181,3 +191,5 @@ if [ -f '/home/elliot/tools/google-cloud-sdk/path.zsh.inc' ]; then . '/home/elli
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/elliot/tools/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/elliot/tools/google-cloud-sdk/completion.zsh.inc'; fi
 source /usr/share/nvm/init-nvm.sh
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
