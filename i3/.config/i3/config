@@ -8,6 +8,9 @@ smart_borders on
 
 font pango:ShureTechMono Nerd Font 9
 
+# Enable moving floating windows with the mouse
+floating_modifier $mod
+
 # autostart
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id "/home/$USER/.config/scripts/polybar/polybar-start.sh"
@@ -22,6 +25,7 @@ exec --no-startup-id dunst -config "/home/$USER/.config/dunst/dunstrc"
 # screenshots
 bindsym Print exec --no-startup-id flameshot screen
 bindsym $mod+Print exec --no-startup-id flameshot gui
+bindsym $mod+Ctrl+p exec --no-startup-id flameshot gui
 
 # volume
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%
