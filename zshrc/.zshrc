@@ -152,7 +152,12 @@ hrserver() {
 
 L_IP_ADDR="$(ifconfig tun0 2>/dev/null | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')"
 if [[ $L_IP_ADDR = "" ]]; then
-	export IP="M $(ifconfig eno1 2>/dev/null | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')"
+	L_INT_IP_ADDR="$(ifconfig eno1 2>/dev/null | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')"
+	if [[ $L_INT_IP_ADDR = "" ]]; then
+		export IP="W $(ifconfig wlo1 2>/dev/null | grep -E -o -m 1 "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1 | tr -d '\n')"
+	else
+		export IP="E $L_INT_IP_ADDR"
+	fi
 else
 	export IP="T $L_IP_ADDR"
 fi
@@ -184,6 +189,7 @@ alias list='for i in `find -type f 2>/dev/null`; do echo -e "$i: \e[1;32m`cat $i
 alias rr='reconranger'
 alias mehd="sudo mount -o uid=elliot,gid=elliot /dev/sdb1 /home/elliot/mnt"
 alias cwee="cd /home/elliot/ehd/courses/HTB_CWEE && python -m http.server 55555"
+alias burploader="cd /home/elliot/BurpSuitePro && java -jar burploader.jar"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/elliot/tools/google-cloud-sdk/path.zsh.inc' ]; then . '/home/elliot/tools/google-cloud-sdk/path.zsh.inc'; fi
