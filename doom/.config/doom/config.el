@@ -97,6 +97,3 @@
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode))
-
-(after! emmet-mode
-  (setq emmet-move-cursor-between-quotes t))  ;; Move cursor inside quotes after expansion
