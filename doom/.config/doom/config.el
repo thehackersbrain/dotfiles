@@ -22,9 +22,9 @@
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 
 ;; Custom font-config
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 18)
-      doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
-      doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 22))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 16)
+      doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 18)
+      doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 20))
 
 (custom-set-faces!
   '(org-level-1 :inherit outline-1 :height 1.3)
@@ -91,3 +91,12 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; org mode bullets config
+(require 'org-bullets)
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode))
+
+(after! emmet-mode
+  (setq emmet-move-cursor-between-quotes t))  ;; Move cursor inside quotes after expansion

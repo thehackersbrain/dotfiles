@@ -55,4 +55,3 @@
 ;; Installing custom packages
 (package! evil-nerd-commenter)
 (package! org-bullets)
-(package! emmet-mode)
