@@ -37,3 +37,6 @@
         gcmh-high-cons-threshold (* 256 1024 1024)))
 
 (setq inhibit-compacting-font-caches t)
+
+;; setting up projects directory for projectile
+(setq projectile-project-search-path '("/home/elliot/projects/"))
