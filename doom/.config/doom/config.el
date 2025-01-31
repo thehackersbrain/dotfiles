@@ -22,9 +22,9 @@
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 
 ;; Custom font-config
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 16)
-      doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 18)
-      doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 20))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 18)
+      doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
+      doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 22))
 
 (custom-set-faces!
   '(org-level-1 :inherit outline-1 :height 1.3)
@@ -92,8 +92,24 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; org mode bullets config
+;; org mode bullets config - START
 (require 'org-bullets)
-(use-package org-bullets
+(use-package! org-bullets
   :after org
   :hook (org-mode . org-bullets-mode))
+;; org mode bullets config - END
+
+;; pyvenv config for python evironments - START
+(use-package! pyvenv
+  :hook (python-mode . pyvenv-mode)
+  :config
+  (setq pyvenv-tracking-mode 1) ;; for autodetecting ENVs
+  (setq pyvenv-default-virtual-env-name "env") ;; default ENV name
+  (add-hook 'python-mode-hook #'my/auto-activate-venv))
+
+(defun my/auto-activate-venv ()
+  "Auto activate venv from project root if available"
+  (let ((venv-path (locate-dominating-file default-directory "env")))
+    (when venv-path
+      (pyvenv-activate (expand-file-name "env" venv-path)))))
+;; pyvenv config for python evironments - END

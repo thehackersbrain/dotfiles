@@ -28,7 +28,8 @@
 
 (after! lsp-pyright
   (setq lsp-pyright-use-library-code-for-type t
-        lsp-pyright-typechecking-mode "standard"))
+        lsp-pyright-typechecking-mode "standard"
+        lsp-pyright-venv-path (expand-file-name "env" (or ( projectile-project-root) default-directory))))
 
 (use-package! gcmh
   :config
