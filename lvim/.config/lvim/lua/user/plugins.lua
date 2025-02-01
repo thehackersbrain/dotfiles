@@ -4,7 +4,8 @@ lvim.plugins = {
 	{ "AckslD/swenv.nvim" },
 	{ "stevearc/dressing.nvim" },
 	{ "onsails/lspkind.nvim" },
-	{ "ThePrimeagen/vim-be-good" }, -- For vim learning
+	{ "ThePrimeagen/vim-be-good" },      -- For vim learning
+	{ 'christoomey/vim-tmux-navigator' }, -- For easier vim and tmux navigation
 	{
 		"folke/todo-comments.nvim",
 		event = "BufRead",
