@@ -10,3 +10,13 @@
        :desc "Manually activate venv" "a" #'pyvenv-activate
        :desc "Deactivate venv" "d" #'pyvenv-activate
        :desc "Select venv (workon)" "w" #'pyvenv-workon))
+
+
+;; keybinds for latex editing
+(map! :leader
+      :desc "LaTeX Commands" "l" nil ;; Reserve <SPC> l for LaTeX
+      (:prefix ("l" . "LaTeX")
+       :desc "Build LaTeX" "b" #'TeX-command-run-all
+       :desc "View PDF" "v" #'TeX-view
+       :desc "Preview in PDF" "p" #'latex-preview-pane-mode
+       ))
