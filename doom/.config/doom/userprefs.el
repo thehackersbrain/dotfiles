@@ -46,8 +46,15 @@
 ;; setting up latex development
 ;; enable lsp mode
 (setq +latex-viewers '(pdf-tools))
-(use-package! latex-preview-pane
-  :hook (LaTeX-mode . latex-preview-pane-mode)
-  :config
-  (setq latex-preview-pane-multifile-mode 'AUCTeX
-        ))
+(setq TeX-save-query nil)
+(setq TeX-auto-save t)
+(setq TeX-source-correlate-mode t)
+(setq TeX-parse-self t)
+(latex-preview-pane-enable)
+(add-hook 'pdf-view-mode-hook 'auto-revert-mode)
+;; (use-package! latex-preview-pane
+;;   :hook (latex-mode . latex-preview-pane-mode)
+;;   :config
+;;   (setq latex-preview-pane-refresh t
+;;         latex-preview-pane-multifile-mode 'AUCTeX
+;;         ))
