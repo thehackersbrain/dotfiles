@@ -52,6 +52,7 @@
   (LaTeX-mode . reftex-mode)      ;; Enable referencing
   (LaTeX-mode . turn-on-flyspell) ;; Enable spellchecking
   (LaTeX-mode . outline-indent-minor-mode) ;; Enable folding
+  (LaTeX-mode . lsp) ;; Enable lsp mode
   :init
   (setq TeX-parse-self t ;; Auto-parse tex file on load
         TeX-auto-save t  ;; Auto-parse tex file on save
@@ -68,7 +69,8 @@
         TeX-source-correlate-start-server t))
 
 (use-package pdf-tools
-  :mode "\\.pdf\\'"
+  :mode ("\\.pdf\\'" . pdf-view-mode)  ;; Ensure PDFs open in pdf-view-mode
+  :hook (pdf-view-mode . pdf-sync-minor-mode)  ;; Enable pdf-sync-minor-mode automatically
   :custom
   (pdf-view-resize-factor 1.05) ;; Better zoom control
   (pdf-view-midnight-colors '("#ffffff" . "#000000")) ;; Dark mode
