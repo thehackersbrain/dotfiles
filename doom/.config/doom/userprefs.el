@@ -1,3 +1,7 @@
+;; spell-check config
+(setq ispell-dictionary "en_US")        ;; Set dictionary to en_US explicitly
+(setq ispell-local-dictionary "en_US")
+
 ;; Custom corfu mode optimization
 (after! corfu
   (use-package corfu
