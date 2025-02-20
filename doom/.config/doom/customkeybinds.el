@@ -19,4 +19,5 @@
        :desc "Build LaTeX" "b" #'TeX-command-run-all
        :desc "View PDF" "v" #'TeX-view
        :desc "Preview in PDF" "p" #'latex-preview-pane-mode
+       :desc "Select LaTeX engine" "e" #'TeX-engine-set
        ))

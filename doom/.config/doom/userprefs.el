@@ -45,16 +45,32 @@
 
 ;; setting up latex development
 ;; enable lsp mode
-(setq +latex-viewers '(pdf-tools))
-(setq TeX-save-query nil)
-(setq TeX-auto-save t)
-(setq TeX-source-correlate-mode t)
-(setq TeX-parse-self t)
-(latex-preview-pane-enable)
-(add-hook 'pdf-view-mode-hook 'auto-revert-mode)
-;; (use-package! latex-preview-pane
-;;   :hook (latex-mode . latex-preview-pane-mode)
-;;   :config
-;;   (setq latex-preview-pane-refresh t
-;;         latex-preview-pane-multifile-mode 'AUCTeX
-;;         ))
+(use-package tex
+  :ensure auctex
+  :mode ("\\.tex\\'" . LaTeX-mode) ;; Correct association
+  :hook
+  (LaTeX-mode . reftex-mode)      ;; Enable referencing
+  (LaTeX-mode . turn-on-flyspell) ;; Enable spellchecking
+  (LaTeX-mode . outline-indent-minor-mode) ;; Enable folding
+  :init
+  (setq TeX-parse-self t ;; Auto-parse tex file on load
+        TeX-auto-save t  ;; Auto-parse tex file on save
+        TeX-master nil)  ;; Always query for master file
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+  (add-hook 'TeX-update-style-hook 'hl-todo-mode) ;; Fix for hl-todo-mode
+  :config
+  (setq TeX-view-program-selection
+        '((output-pdf "PDF Tools") ;; Primary viewer
+          (output-dvi "xdvi")       ;; Fallback for DVI output
+          (output-html "xdg-open"))) ;; Open HTML in browser
+  (setq TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view)))
+  (setq TeX-source-correlate-mode t
+        TeX-source-correlate-start-server t))
+
+(use-package pdf-tools
+  :mode "\\.pdf\\'"
+  :custom
+  (pdf-view-resize-factor 1.05) ;; Better zoom control
+  (pdf-view-midnight-colors '("#ffffff" . "#000000")) ;; Dark mode
+  :init
+  (pdf-loader-install))
