@@ -57,6 +57,7 @@
   (LaTeX-mode . turn-on-flyspell) ;; Enable spellchecking
   (LaTeX-mode . outline-indent-minor-mode) ;; Enable folding
   (LaTeX-mode . lsp) ;; Enable lsp mode
+  (LaTeX-mode . yas-minor-mode) ;; Enable snippets
   :init
   (setq TeX-parse-self t ;; Auto-parse tex file on load
         TeX-auto-save t  ;; Auto-parse tex file on save
