@@ -58,3 +58,4 @@
 (package! emmet-mode)
 (package! react-snippets)
 (package! js-react-redux-yasnippets)
+(package! apheleia)

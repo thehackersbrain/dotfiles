@@ -124,5 +124,11 @@
 ;; snippets setup
 (use-package! react-snippets :after yasnippet)
 
+;; apheleia for tailwindcss syntax highlighting
+(use-package! apheleia
+  :hook ((web-mode . apheleia)
+         (typescript-tsx-mode . apheleia-mode)
+         (rjsx-mode . apheleia-mode)))
+
 ;; yas-snippet config
 (setq yas-snippet-dirs '("/home/elliot/.config/emacs/snippets"))
