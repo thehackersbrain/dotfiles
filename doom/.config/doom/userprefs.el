@@ -81,3 +81,16 @@
   (pdf-view-midnight-colors '("#ffffff" . "#000000")) ;; Dark mode
   :init
   (pdf-loader-install))
+
+;; setting up jsx and tsx
+(after! typescript-mode
+  (setq typescript-indent-level 2)
+  (setq lsp-headerline-breadcrumb-enable t))
+
+(use-package! web-mode
+  :mode ("\\.tsx\\'" "\\.jsx\\'" "\\.html\\'"))
+
+(use-package! rjsx-mode
+  :mode ("\\.jsx\\'" "\\.tsx\\'")
+  :config
+  (setq js-indent-level 2))

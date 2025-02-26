@@ -34,6 +34,8 @@
   '(org-level-5 :inherit outline-3 :height 0.9)
   '(org-document-title :height 1.4 :weight bold))
 
+(setq org-startup-with-inline-images t)
+
 
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
