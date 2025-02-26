@@ -55,3 +55,6 @@
 ;; Installing custom packages
 (package! evil-nerd-commenter)
 (package! org-bullets)
+(package! emmet-mode)
+(package! react-snippets)
+(package! js-react-redux-yasnippets)

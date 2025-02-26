@@ -2,6 +2,7 @@
 (setq ispell-dictionary "en_US")        ;; Set dictionary to en_US explicitly
 (setq ispell-local-dictionary "en_US")
 
+
 ;; Custom corfu mode optimization
 (after! corfu
   (use-package corfu
@@ -21,6 +22,24 @@
   (setq corfu-min-width 50
         corfu-commit-predicate #'corfu-commit-by-typing)
   )
+
+
+;; enable dabbrev for completing words
+(use-package dabbrev
+  :ensure nil
+  :after corfu
+  :config
+  (setq dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\|gif\\)\\'")))
+
+
+;; use cape-dabbrev for Corfu-completion
+(use-package cape
+  :ensure t
+  :after corfu
+  :init
+  (setq cape-dabbrev-min-length 2)
+  :config
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
 
 
 ;; Optimization for python setup
@@ -94,3 +113,16 @@
   :mode ("\\.jsx\\'" "\\.tsx\\'")
   :config
   (setq js-indent-level 2))
+
+(use-package! emmet-mode
+  :hook ((rjsx-mode . emmet-mode)
+         (typescript-tsx-mode . emmet-mode)
+         (web-mode . emmet-mode))
+  :config
+  (setq emmet-expand-jsx-className? t))
+
+;; snippets setup
+(use-package! react-snippets :after yasnippet)
+
+;; yas-snippet config
+(setq yas-snippet-dirs '("/home/elliot/.config/emacs/snippets"))
