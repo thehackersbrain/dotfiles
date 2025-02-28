@@ -74,7 +74,6 @@
   :hook
   (LaTeX-mode . reftex-mode)      ;; Enable referencing
   (LaTeX-mode . turn-on-flyspell) ;; Enable spellchecking
-  (LaTeX-mode . outline-indent-minor-mode) ;; Enable folding
   (LaTeX-mode . lsp) ;; Enable lsp mode
   (LaTeX-mode . yas-minor-mode) ;; Enable snippets
   :init
